@@ -11,5 +11,6 @@
         public string CountryOfOrigin { get; set; }
         public string ProductImageUrl { get; set; }
         public double UnitPrice { get; set; }
+        public List<Order> Orders { get; set; }
     }
 }

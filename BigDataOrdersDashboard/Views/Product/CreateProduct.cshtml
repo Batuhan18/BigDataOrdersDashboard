@@ -4,6 +4,8 @@
     Layout = "~/Views/AdminLayout/Index.cshtml";
 }
 
+
+
 <section class="content">
     <div class="block-header">
         <div class="row">
@@ -41,9 +43,11 @@
                             <input type="text" asp-for="StockQuantity" class="form-control" />
                             <br />
                             <label>Ürün Kategorisi</label>
-                            <select asp-for="CategoryId" asp-items="ViewBag.CategoryList" class="form-control">
+                            <div class="form-line">
+                            <select asp-for="CategoryId" asp-items="ViewBag.CategoryList" class="form-control show-tick">
                                 <option value="">--- Kategori Seçin ---</option>
                             </select>
+                            </div>
                             <br />
                             <label>Ürün Menşei Ülke</label>
                             <input type="text" asp-for="CountryOfOrigin" class="form-control" />
