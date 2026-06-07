@@ -36,6 +36,42 @@ namespace BigDataOrdersDashboard.Controllers
         {
             ViewBag.MostExpensiveProduct = _context.Products.Where(x => x.UnitPrice == (_context.Products.Max(x => x.UnitPrice))).Select(y => y.ProductName).FirstOrDefault();
             ViewBag.CheapestProduct = _context.Products.Where(x => x.UnitPrice == (_context.Products.Min(x => x.UnitPrice))).Select(y => y.ProductName).FirstOrDefault();
+            ViewBag.TopStockProduct = _context.Products.OrderByDescending(x => x.StockQuantity).Take(1).Select(y => y.ProductName).FirstOrDefault();
+            ViewBag.LastAddedProduct = _context.Products.OrderByDescending(x => x.ProductId).Take(1).Select(y => y.ProductName).FirstOrDefault();
+            ViewBag.LastAddedCustomer = _context.Customers.OrderByDescending(x => x.CustomerId).Take(1).Select(y => y.CustomerName + " " + y.CustomerSurname).FirstOrDefault();
+
+            ViewBag.TopPaymentMethod = _context.Orders.GroupBy(x => x.PaymentMethod).Select(y => new
+            {
+                PaymentMethod = y.Key,
+                TotalOrders = y.Count()
+            }).OrderByDescending(k => k.TotalOrders).Select(o=>o.PaymentMethod).FirstOrDefault();
+
+            ViewBag.TopOrderedProduct = _context.Orders.GroupBy(o => o.Product.ProductName).Select(y => new
+            {
+                ProductName = y.Key,
+                TotalQuantity = y.Sum(o => o.Quantity)
+            }).OrderByDescending(x => x.TotalQuantity).Select(z => z.ProductName).FirstOrDefault();
+
+            ViewBag.MinOrderedProduct = _context.Orders.GroupBy(o => o.Product.ProductName).Select(y => new
+            {
+                ProductName = y.Key,
+                TotalQuantity = y.Sum(o => o.Quantity)
+            }).OrderBy(x => x.TotalQuantity).Select(z => z.ProductName).FirstOrDefault();
+
+            ViewBag.TopCountry = _context.Orders.GroupBy(x => x.Customer.CustomerCountry).Select(k => new
+            {
+                CustomerCountry = k.Key,
+                TotalQuantity = k.Count()
+            }).OrderByDescending(p => p.TotalQuantity).Select(c => c.CustomerCountry).FirstOrDefault();
+
+            ViewBag.TopCity= _context.Orders.GroupBy(x => x.Customer.CustomerCity).Select(k => new
+            {
+                CustomerCity = k.Key,
+                TotalQuantity = k.Count()
+            }).OrderByDescending(p => p.TotalQuantity).Select(c => c.CustomerCity).FirstOrDefault();
+
+
+            
             return View();
         }
     }
